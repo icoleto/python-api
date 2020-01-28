@@ -12,17 +12,6 @@ def hello():
     return "Hello Python World!"
 
 
-@app.route('/postjson', methods=['POST'])
-def postJsonHandler():
-    print ('Getting RAW Data')
-    print request.get_data()
-    print ('Validate JSON Format')
-    print (request.is_json)
-    content = request.get_json()
-    print (content)
-    return 'JSON posted'
-
-
 @app.route("/fibonacci/<num>")
 def fibonacciHandler(num):
     num = int(request.view_args['num'])
