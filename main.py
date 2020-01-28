@@ -1,5 +1,6 @@
 from flask import Flask
 from flask import request
+from flask import Response
 from flask import jsonify
 import json
 
@@ -25,10 +26,8 @@ def postJsonHandler():
 @app.route("/fibonacci/<num>")
 def fibonacciHandler(num):
     num = int(request.view_args['num'])
-    print(num)
     response = FibonacciDto(num, fibonacci(num))
-    print(response)
-    return toJson(response)
+    return toJsonResponse(response)
 
 
 def fibonacci(n):
@@ -44,9 +43,9 @@ class FibonacciDto:
         self.value = value
 
 
-def toJson(obj):
-    return json.dumps(obj.__dict__)
+def toJsonResponse(obj):
+    return Response(json.dumps(obj.__dict__), mimetype='application/json')
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=3001)
