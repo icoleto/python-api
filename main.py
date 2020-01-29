@@ -2,9 +2,17 @@ from flask import Flask
 from flask import request
 from flask import Response
 from flask import jsonify
+from dotenv import load_dotenv
+load_dotenv()
+
+from database.db import initialize_db
+from database.models import User
 import json
 
 app = Flask(__name__)
+
+
+initialize_db(app)
 
 
 @app.route("/")
@@ -17,6 +25,13 @@ def fibonacciHandler(num):
     num = int(request.view_args['num'])
     response = FibonacciDto(num, fibonacci(num))
     return toJsonResponse(response)
+
+
+@app.route('/user/')
+def findUserByName():
+    name = request.args.get('name')
+    users = User.objects.filter(name=name)
+    return toJsonResponse(users)
 
 
 def fibonacci(n):
@@ -33,7 +48,10 @@ class FibonacciDto:
 
 
 def toJsonResponse(obj):
-    return Response(json.dumps(obj.__dict__), mimetype='application/json')
+    if hasattr(type(obj), '__iter__'):
+        return Response(obj.to_json(), mimetype='application/json')
+    else:
+        return Response(json.dumps(obj.__dict__), mimetype='application/json')
 
 
 if __name__ == '__main__':
