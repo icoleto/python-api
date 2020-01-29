@@ -27,7 +27,7 @@ def fibonacciHandler(num):
     return toJsonResponse(response)
 
 
-@app.route('/user/')
+@app.route('/user')
 def findUserByName():
     name = request.args.get('name')
     users = User.objects.filter(name=name)
