@@ -4,14 +4,12 @@ from database.db import initialize_db
 from flask import send_from_directory
 from flask import Flask
 from flask import request
-from flask import Response
 from flask import jsonify
 from dotenv import load_dotenv
+from dto.fibonacci_dto import FibonacciDto
+from utils import toJsonResponse, fibonacci
 load_dotenv()
 
-from database.db import initialize_db
-from database.models import User
-import json
 
 app = Flask(__name__)
 
@@ -38,24 +36,6 @@ def findUserByName():
     return toJsonResponse(users)
 
 
-def fibonacci(n):
-    if n <= 1:
-        return n
-
-    return fibonacci(n-1) + fibonacci(n-2)
-
-
-class FibonacciDto:
-    def __init__(self, n, value):
-        self.n = n
-        self.value = value
-
-
-def toJsonResponse(obj):
-    if hasattr(type(obj), '__iter__'):
-        return Response(obj.to_json(), mimetype='application/json')
-    else:
-        return Response(json.dumps(obj.__dict__), mimetype='application/json')
 
 
 if __name__ == '__main__':
