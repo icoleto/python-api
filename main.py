@@ -1,3 +1,7 @@
+from database.models import User
+from service.user_service import get_user_by_name
+from database.db import initialize_db
+from flask import send_from_directory
 from flask import Flask
 from flask import request
 from flask import Response
@@ -30,7 +34,7 @@ def fibonacciHandler(num):
 @app.route('/user')
 def findUserByName():
     name = request.args.get('name')
-    users = User.objects.filter(name=name)
+    users = get_user_by_name(name)
     return toJsonResponse(users)
 
 
