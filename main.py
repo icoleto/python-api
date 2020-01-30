@@ -1,3 +1,4 @@
+import os
 from database.models import User
 from service.user_service import get_user_by_name
 from database.db import initialize_db
@@ -34,6 +35,13 @@ def findUserByName():
     name = request.args.get('name')
     users = get_user_by_name(name)
     return toJsonResponse(users)
+
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'),
+                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
+
 
 
 
